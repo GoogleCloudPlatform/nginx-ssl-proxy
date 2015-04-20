@@ -15,6 +15,6 @@ RUN rm /etc/nginx/conf.d/*.conf
 WORKDIR /usr/src
 
 ADD start.sh /usr/src/
-ADD target_service.conf /usr/src/
+ADD *.conf /usr/src/
 
 ENTRYPOINT ./start.sh
