@@ -27,8 +27,18 @@ if [ -n "${ENABLE_BASIC_AUTH+1}" ] && [ "${ENABLE_BASIC_AUTH,,}" = "true" ]; the
    sed -i "s/#auth_basic/auth_basic/g;" /etc/nginx/conf.d/proxy.conf
 fi
 
+# If the SERVICE_HOST_ENV_NAME and SERVICE_PORT_ENV_NAME vars are provided,
+# they point to the env vars set by Kubernetes that contain the actual
+# target address and port. Override the default with them.
+if [ -n "${SERVICE_HOST_ENV_NAME+1}" ] && [ "${SERVICE_HOST_ENV_NAME,,}" = "true" ]; then
+  TARGET_SERVICE=${!SERVICE_HOST_ENV_NAME}
+fi
+if [ -n "${SERVICE_PORT_ENV_NAME+1}" ] && [ "${SERVICE_PORT_ENV_NAME,,}" = "true" ]; then
+  TARGET_SERVICE="$PROXY_TARGET_HOST${!SERVICE_PORT_ENV_NAME}":
+fi
+
 # Tell nginx the address and port of the service to proxy to
-sed -i "s/{{TARGET_SERVICE_HOST}}/${!SERVICE_HOST_ENV_NAME}:${!SERVICE_PORT_ENV_NAME}/g;" /etc/nginx/conf.d/proxy.conf
+sed -i "s/{{TARGET_SERVICE}}/${TARGET_SERVICE}/g;" /etc/nginx/conf.d/proxy.conf
 
 echo "Starting nginx..."
 nginx -g 'daemon off;'
