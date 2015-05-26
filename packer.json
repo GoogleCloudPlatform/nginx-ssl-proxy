@@ -1,5 +1,6 @@
 {
   "variables": {
+    "name": "nginx-ssl-proxy",
     "git_commit": "",
     "git_branch": "",
     "account_file": "",
@@ -44,7 +45,7 @@
     [
         {
             "type": "docker-tag",
-            "repository": "gcr.io/{{user `project_id`}}/redmine",
+            "repository": "gcr.io/{{user `project_id`}}/{{user `name`}}",
             "tag": "{{user `git_branch`}}-{{user `git_commit`}}",
             "only": ["docker"]
         }
