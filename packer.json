@@ -1,0 +1,53 @@
+{
+  "variables": {
+    "git_commit": "",
+    "git_branch": "",
+    "account_file": "",
+    "project_id": "null"
+  },
+  "builders": [
+    {
+      "type": "docker",
+      "image": "nginx",
+      "commit": "true" 
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "rm /etc/nginx/conf.d/*.conf"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "nginx/nginx.conf",
+      "destination": "/etc/nginx/nginx.conf"
+    },
+    {
+      "type": "file",
+      "source": "nginx/proxy_ssl.conf",
+      "destination": "/usr/src/proxy_ssl.conf"
+    },
+    {
+      "type": "file",
+      "source": "nginx/proxy_nossl.conf",
+      "destination": "/usr/src/proxy_nossl.conf"
+    },
+    {
+      "type": "file",
+      "source": "start.sh",
+      "destination": "/usr/bin/start.sh"
+    }
+  ],
+  "post-processors": [
+    [
+        {
+            "type": "docker-tag",
+            "repository": "gcr.io/{{user `project_id`}}/redmine",
+            "tag": "{{user `git_branch`}}-{{user `git_commit`}}",
+            "only": ["docker"]
+        }
+    ]
+  ]
+}
