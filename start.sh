@@ -24,7 +24,7 @@ fi
 # If an htpasswd file is provided, download and configure nginx 
 if [ -n "${ENABLE_BASIC_AUTH+1}" ] && [ "${ENABLE_BASIC_AUTH,,}" = "true" ]; then
   echo "Enabling basic auth..."
-   sed -i "s/#auth_basic/auth_basic/g;" /etc/nginx/conf.d/proxy.conf
+  sed -i "s/#auth_basic/auth_basic/g;" /etc/nginx/conf.d/proxy.conf
 fi
 
 # If the SERVICE_HOST_ENV_NAME and SERVICE_PORT_ENV_NAME vars are provided,
