@@ -17,6 +17,15 @@ Here's how the replication controller and service would function terminating SSL
 
 See [https://github.com/GoogleCloudPlatform/kube-jenkins-imager](https://github.com/GoogleCloudPlatform/kube-jenkins-imager) for a complete tutorial that uses the `nginx-ssl-proxy` in Kubernetes.
 
+## Generating test certificates
+
+Use the setup-certs.sh script to generate test certificates. It will create your own Certificate Authority and
+use that to self sign a certificate.
+
+    ./setup-certs.sh /path/to/certs/folder
+
+**THIS IS NOT FOR PRODUCTION USE.**
+
 ## Run an SSL Termination Proxy from the CLI
 To run an SSL termination proxy you must have an existing SSL certificate and key. These instructions assume they are stored at /path/to/secrets/ and named `cert.crt` and `key.pem`. You'll need to change those values based on your actual file path and names.
 
@@ -41,7 +50,7 @@ To run an SSL termination proxy you must have an existing SSL certificate and ke
       -v /path/to/secrets/dhparam.pem:/etc/secrets/dhparam \
       nginx-ssl-proxy
     ```
-    The really important thing here is that you map in your cert to `/etc/secrets/proxycert`, your key to `/etc/secrets/proxykey`, and your dhparam to `/etc/secrets/dhparam` as shown in the command above. 
+    The really important thing here is that you map in your cert to `/etc/secrets/proxycert`, your key to `/etc/secrets/proxykey`, and your dhparam to `/etc/secrets/dhparam` as shown in the command above.
 
 3. **Enable Basic Access Authentication**
 
