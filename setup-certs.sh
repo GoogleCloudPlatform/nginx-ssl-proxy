@@ -15,7 +15,7 @@ SERVER_CSR="${LOCATION}/server.csr"
 echo $SERVER_KEY, $SERVER_CERT, $DHPARAM, $CA_KEY
 
 printf "# Create new dhparam. This may take a few minutes...\n"
-# openssl dhparam -out $DHPARAM 2048
+openssl dhparam -out $DHPARAM 2048
 
 printf "\n# Create the CA...\n"
 # Create the CA Key and Certificate for signing Client Certs
