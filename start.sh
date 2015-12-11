@@ -54,5 +54,4 @@ sed -i "s/{{TARGET_SERVICE}}/${TARGET_SERVICE}/g;" /etc/nginx/conf.d/proxy.conf
 sed -i "s/{{CERT_SERVICE}}/${CERT_SERVICE}/g;" /etc/nginx/conf.d/proxy.conf
 
 echo "Starting nginx..."
-cat /etc/nginx/conf.d/proxy.conf
 nginx -g 'daemon off;'
