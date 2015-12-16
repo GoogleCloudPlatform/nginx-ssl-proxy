@@ -28,13 +28,21 @@ if [ -n "${ENABLE_BASIC_AUTH+1}" ] && [ "${ENABLE_BASIC_AUTH,,}" = "true" ]; the
 fi
 
 # If the SERVICE_HOST_ENV_NAME and SERVICE_PORT_ENV_NAME vars are provided,
+# there are two options:
+#  - Option 1:
 # they point to the env vars set by Kubernetes that contain the actual
 # target address and port. Override the default with them.
+#  - Option 2:
+# they point to a host and port accessible from the container, respectively,
+# as in a multi-container pod scenario in Kubernetes.
+# E.g.
+#    - SERVICE_HOST_ENV_NAME=localhost
+#    - SERVICE_PORT_ENV_NAME=8080
 if [ -n "${SERVICE_HOST_ENV_NAME+1}" ]; then
-  TARGET_SERVICE=${!SERVICE_HOST_ENV_NAME}
+  TARGET_SERVICE=${!SERVICE_HOST_ENV_NAME:=$SERVICE_HOST_ENV_NAME}
 fi
 if [ -n "${SERVICE_PORT_ENV_NAME+1}" ]; then
-  TARGET_SERVICE="$TARGET_SERVICE:${!SERVICE_PORT_ENV_NAME}"
+  TARGET_SERVICE="$TARGET_SERVICE:${!SERVICE_PORT_ENV_NAME:=$SERVICE_PORT_ENV_NAME}"
 fi
 
 # Tell nginx the address and port of the service to proxy to
