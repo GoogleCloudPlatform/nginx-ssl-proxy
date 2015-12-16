@@ -39,9 +39,13 @@ fi
 #    - SERVICE_HOST_ENV_NAME=localhost
 #    - SERVICE_PORT_ENV_NAME=8080
 if [ -n "${SERVICE_HOST_ENV_NAME+1}" ]; then
+  # get value of the env variable in SERVICE_HOST_ENV_NAME as host, if that's not set,
+  # SERVICE_HOST_ENV_NAME has the host value
   TARGET_SERVICE=${!SERVICE_HOST_ENV_NAME:=$SERVICE_HOST_ENV_NAME}
 fi
 if [ -n "${SERVICE_PORT_ENV_NAME+1}" ]; then
+  # get value of the env variable in SERVICE_PORT_ENV_NAME as port, if that's not set,
+  # SERVICE_PORT_ENV_NAME has the port value
   TARGET_SERVICE="$TARGET_SERVICE:${!SERVICE_PORT_ENV_NAME:=$SERVICE_PORT_ENV_NAME}"
 fi
 
