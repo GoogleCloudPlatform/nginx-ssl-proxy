@@ -48,10 +48,13 @@ if [ -n "${CERT_SERVICE_PORT_ENV_NAME+1}" ]; then
   CERT_SERVICE="$CERT_SERVICE:${!CERT_SERVICE_PORT_ENV_NAME}"
 fi
 
+if [ -n "${CERT_SERVICE+1}" ]; then
+    # Tell nginx the address and port of the certification service.
+    sed -i "s/{{CERT_SERVICE}}/${CERT_SERVICE}/g;" /etc/nginx/conf.d/proxy.conf
+    sed -i "s/#letsencrypt# //g;" /etc/nginx/conf.d/proxy.conf
+fi
 # Tell nginx the address and port of the service to proxy to
 sed -i "s/{{TARGET_SERVICE}}/${TARGET_SERVICE}/g;" /etc/nginx/conf.d/proxy.conf
-# Tell nginx the address and port of the certification service.
-sed -i "s/{{CERT_SERVICE}}/${CERT_SERVICE}/g;" /etc/nginx/conf.d/proxy.conf
 
 echo "Starting nginx..."
 nginx -g 'daemon off;'
