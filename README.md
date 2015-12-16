@@ -11,12 +11,6 @@ docker build -t nginx-ssl-proxy .
 ## Using with Kubernetes
 This image is optimized for use in a Kubernetes cluster to provide SSL termination for other services in the cluster. It should be deployed as a [Kubernetes replication controller](https://github.com/GoogleCloudPlatform/kubernetes/blob/master/docs/replication-controller.md) with a [service and public load balancer](https://github.com/GoogleCloudPlatform/kubernetes/blob/master/docs/services.md) in front of it. SSL certificates, keys, and other secrets are managed via the [Kubernetes Secrets API](https://github.com/GoogleCloudPlatform/kubernetes/blob/master/docs/design/secrets.md).
 
-Here's how the replication controller and service would function terminating SSL for Jenkins in a Kubernetes cluster:
-
-![](img/architecture.png)
-
-See [https://github.com/GoogleCloudPlatform/kube-jenkins-imager](https://github.com/GoogleCloudPlatform/kube-jenkins-imager) for a complete tutorial that uses the `nginx-ssl-proxy` in Kubernetes.
-
 ## Generating test certificates
 
 Use the setup-certs.sh script to generate test certificates. It will create your own Certificate Authority and
@@ -73,3 +67,10 @@ To run an SSL termination proxy you must have an existing SSL certificate and ke
       -v /path/to/secrets/htpasswd:/etc/secrets/htpasswd \
       nginx-ssl-proxy
     ```
+
+ ## Connecting to a certification service
+
+ The nginx file supports proxying `/.well-known/acme-challenge` requests. The
+ destination should be defined using the CERT_SERVICE env variable.
+
+ The CERT_SERVICE will receive all requests to `/.well-known/acme-challenge`
