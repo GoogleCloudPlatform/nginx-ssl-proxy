@@ -16,9 +16,11 @@
 if [ -n "${ENABLE_SSL+1}" ] && [ "${ENABLE_SSL,,}" = "true" ]; then
   echo "Enabling SSL..."
   cp /usr/src/proxy_ssl.conf /etc/nginx/conf.d/proxy.conf
+  cp /usr/src/default_ssl.conf /etc/nginx/conf.d/default.conf
 else
   # No SSL
   cp /usr/src/proxy_nossl.conf /etc/nginx/conf.d/proxy.conf
+  cp /usr/src/default_nossl.conf /etc/nginx/conf.d/default.conf
 fi
 
 # If an htpasswd file is provided, download and configure nginx
@@ -54,7 +56,11 @@ if [ -n "${CERT_SERVICE+1}" ]; then
     sed -i "s/#letsencrypt# //g;" /etc/nginx/conf.d/proxy.conf
 fi
 # Tell nginx the address and port of the service to proxy to
-sed -i "s/{{TARGET_SERVICE}}/${TARGET_SERVICE}/g;" /etc/nginx/conf.d/proxy.conf
+sed -i "s|{{TARGET_SERVICE}}|${TARGET_SERVICE}|" /etc/nginx/conf.d/proxy.conf
+
+# Tell nginx the name of the service
+sed -i "s/{{SERVER_NAME}}/${SERVER_NAME}/g;" /etc/nginx/conf.d/proxy.conf
+
 
 echo "Starting nginx..."
 nginx -g 'daemon off;'
