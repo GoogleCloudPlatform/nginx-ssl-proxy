@@ -64,3 +64,19 @@ To run an SSL termination proxy you must have an existing SSL certificate and ke
       -v /path/to/secrets/htpasswd:/etc/secrets/htpasswd \
       nginx-ssl-proxy
     ```
+4. **Add additional nginx config**
+
+   All *.conf from [nginx/extra](nginx/extra) are added during *built* to **/etc/nginx/extra-conf.d** and get included on startup of the container. Using volumes you can overwrite them on *start* of the container:
+
+    ```shell
+    docker run \
+      -e ENABLE_SSL=true \
+      -e TARGET_SERVICE=THE_ADDRESS_OR_HOST_YOU_ARE_PROXYING_TO \
+      -v /path/to/secrets/cert.crt:/etc/secrets/proxycert \
+      -v /path/to/secrets/key.pem:/etc/secrets/proxykey \
+      -v /path/to/secrets/dhparam.pem:/etc/secrets/dhparam \
+      -v /path/to/additional-nginx.conf:/etc/nginx/extra-conf.d/additional_proxy.conf \
+      nginx-ssl-proxy
+    ```
+
+   That way it is possible to setup additional proxies or modifying the nginx configuration.
