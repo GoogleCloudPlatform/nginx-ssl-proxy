@@ -41,7 +41,7 @@ To run an SSL termination proxy you must have an existing SSL certificate and ke
       -v /path/to/secrets/dhparam.pem:/etc/secrets/dhparam \
       nginx-ssl-proxy
     ```
-    The really important thing here is that you map in your cert to `/etc/secrets/proxycert`, your key to `/etc/secrets/proxykey`, and your dhparam to `/etc/secrets/dhparam` as shown in the command above. 
+    The really important thing here is that you map in your cert to `/etc/secrets/proxycert`, your key to `/etc/secrets/proxykey`, and your dhparam to `/etc/secrets/dhparam` as shown in the command above.
 
 3. **Enable Basic Access Authentication**
 
@@ -58,6 +58,7 @@ To run an SSL termination proxy you must have an existing SSL certificate and ke
       -e ENABLE_SSL=true \
       -e ENABLE_BASIC_AUTH=true \
       -e TARGET_SERVICE=THE_ADDRESS_OR_HOST_YOU_ARE_PROXYING_TO \
+      -e X_FORWARDED_PORT=POSSIBLY_A_PORT_FOR_THE_X_FORWARDED_PORT_HEADER \
       -v /path/to/secrets/cert.crt:/etc/secrets/proxycert \
       -v /path/to/secrets/key.pem:/etc/secrets/proxykey \
       -v /path/to/secrets/dhparam.pem:/etc/secrets/dhparam \
