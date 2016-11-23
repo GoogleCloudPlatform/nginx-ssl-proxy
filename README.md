@@ -45,7 +45,7 @@ To run an SSL termination proxy you must have an existing SSL certificate and ke
 
 3. **Enable Basic Access Authentication**
 
-    Create an htpaddwd file:
+    Create an htpasswd file:
 
     ```shell
     htpasswd -nb YOUR_USERNAME SUPER_SECRET_PASSWORD > /path/to/secrets/htpasswd
