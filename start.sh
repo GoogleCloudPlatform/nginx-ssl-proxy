@@ -52,5 +52,15 @@ fi
 # Tell nginx the address and port of the service to proxy to
 sed -i "s/{{TARGET_SERVICE}}/${TARGET_SERVICE}/g;" /etc/nginx/conf.d/proxy.conf
 
+# Tell nginx if you want to block or allow iframing of pages and what domain name is allowed to iframe your content
+if [ -n "${XFRAME_OPTION+1}" ]; then
+  echo "Enabling iframeing..."
+  sed -i "s/{{XFRAME_VALUE}}/${XFRAME_OPTION}/g;" /etc/nginx/conf.d/proxy.conf
+else
+  echo "Disabling iframeing..."
+  sed -i "s/{{XFRAME_VALUE}}/DENY/g;" /etc/nginx/conf.d/proxy.conf
+fi
+
+
 echo "Starting nginx..."
 nginx -g 'daemon off;'
