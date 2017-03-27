@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 
-# Env says we're using SSL 
+# Env says we're using SSL
 if [ -n "${ENABLE_SSL+1}" ] && [ "${ENABLE_SSL,,}" = "true" ]; then
   echo "Enabling SSL..."
   cp /usr/src/proxy_ssl.conf /etc/nginx/conf.d/proxy.conf
@@ -21,10 +21,10 @@ else
   cp /usr/src/proxy_nossl.conf /etc/nginx/conf.d/proxy.conf
 fi
 
-# If an htpasswd file is provided, download and configure nginx 
+# If an htpasswd file is provided, download and configure nginx
 if [ -n "${ENABLE_BASIC_AUTH+1}" ] && [ "${ENABLE_BASIC_AUTH,,}" = "true" ]; then
   echo "Enabling basic auth..."
-  sed -i "s/#auth_basic/auth_basic/g;" /etc/nginx/conf.d/proxy.conf
+  sed -i "s;#auth_basic;auth_basic;g;" /etc/nginx/conf.d/proxy.conf
 fi
 
 # If the SERVICE_HOST_ENV_NAME and SERVICE_PORT_ENV_NAME vars are provided,
@@ -50,15 +50,15 @@ if [ -n "${SERVICE_PORT_ENV_NAME+1}" ]; then
 fi
 
 # Tell nginx the address and port of the service to proxy to
-sed -i "s/{{TARGET_SERVICE}}/${TARGET_SERVICE}/g;" /etc/nginx/conf.d/proxy.conf
+sed -i "s;{{TARGET_SERVICE}};${TARGET_SERVICE};g;" /etc/nginx/conf.d/proxy.conf
 
 # Tell nginx if you want to block or allow iframing of pages and what domain name is allowed to iframe your content
 if [ -n "${XFRAME_OPTION+1}" ]; then
   echo "Applying iframe option..."
-  sed -i "s/{{XFRAME_VALUE}}/${XFRAME_OPTION}/g;" /etc/nginx/conf.d/proxy.conf
+  sed -i "s;{{XFRAME_VALUE}};${XFRAME_OPTION};g;" /etc/nginx/conf.d/proxy.conf
 else
   echo "Denying iframes..."
-  sed -i "s/{{XFRAME_VALUE}}/DENY/g;" /etc/nginx/conf.d/proxy.conf
+  sed -i "s;{{XFRAME_VALUE}};DENY;g;" /etc/nginx/conf.d/proxy.conf
 fi
 
 
